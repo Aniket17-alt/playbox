@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Typing Speed Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            height: 100vh;
+            background: #f0f8ff;
+            margin: 0;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        #goBackBtn:hover {
+            background: #666;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        #sentence {
+            font-size: 20px;
+            margin: 20px;
+            padding: 10px;
+            background: #fff;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+            width: 80%;
+            text-align: center;
+        }
+
+        textarea {
+            width: 80%;
+            height: 80px;
+            font-size: 18px;
+            padding: 10px;
+            margin: 15px 0;
+            border-radius: 8px;
+            border: 1px solid #ccc;
+        }
+
+        #stats {
+            font-size: 18px;
+            margin: 10px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            margin-top: 15px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 8px;
+            background: #333;
+            color: white;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #555;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+    <h2>Typing Speed Test</h2>
+    <div id="sentence"></div>
+    <textarea id="input" placeholder="Start typing here..."></textarea>
+    <div id="stats">Time: 0s | WPM: 0 | Accuracy: 0%</div>
+
+    <div class="buttons">
+        <button id="restartBtn">Restart</button>
+        <button id="submitBtn" onclick="submitScore()">Submit Score</button>
+    </div>
+
+    <script>
+        const sentences = [
+            "The quick brown fox jumps over the lazy dog.",
+            "Typing games are fun and help improve speed.",
+            "Practice makes perfect when learning new skills.",
+            "JavaScript is a powerful language for the web.",
+            "Stay consistent and results will follow.",
+            "Programming challenges enhance problem-solving skills.",
+        ];
+
+        const sentenceEl = document.getElementById("sentence");
+        const inputEl = document.getElementById("input");
+        const statsEl = document.getElementById("stats");
+        const restartBtn = document.getElementById("restartBtn");
+        const submitBtn = document.getElementById("submitBtn");
+
+        let currentSentence = "";
+        let startTime = null;
+        let timerInterval = null;
+        let wpm = 0, accuracy = 0, timeElapsed = 0;
+
+        function startGame() {
+            currentSentence = sentences[Math.floor(Math.random() * sentences.length)];
+            sentenceEl.textContent = currentSentence;
+            inputEl.value = "";
+            startTime = null;
+            wpm = 0;
+            accuracy = 0;
+            timeElapsed = 0;
+            statsEl.textContent = "Time: 0s | WPM: 0 | Accuracy: 0%";
+            if (timerInterval) clearInterval(timerInterval);
+        }
+
+        inputEl.addEventListener("input", () => {
+            if (!startTime) {
+                startTime = new Date();
+                timerInterval = setInterval(updateStats, 1000);
+            }
+
+            let typed = inputEl.value;
+            let correctChars = 0;
+            for (let i = 0; i < typed.length; i++) {
+                if (typed[i] === currentSentence[i]) correctChars++;
+            }
+
+            accuracy = Math.floor((correctChars / typed.length) * 100) || 0;
+            let wordsTyped = typed.trim().split(/\s+/).length;
+            timeElapsed = Math.floor((new Date() - startTime) / 1000);
+            wpm = Math.floor((wordsTyped / timeElapsed) * 60) || 0;
+
+            if (typed === currentSentence) {
+                clearInterval(timerInterval);
+                statsEl.textContent = `✅ Finished! Time: ${timeElapsed}s | WPM: ${wpm} | Accuracy: ${accuracy}%`;
+            } else {
+                updateStats();
+            }
+        });
+
+        function updateStats() {
+            statsEl.textContent = `Time: ${timeElapsed}s | WPM: ${wpm} | Accuracy: ${accuracy}%`;
+        }
+
+        restartBtn.addEventListener("click", startGame);
+
+        submitBtn.addEventListener("click", () => {
+            alert(`✅ Score Submitted!\nWPM: ${wpm}\nAccuracy: ${accuracy}%\nTime: ${timeElapsed}s`);
+            // Optional: send score to backend
+            // fetch("/submit", { method: "POST", body: JSON.stringify({ wpm, accuracy, time: timeElapsed }) })
+        });
+        function submitScore() {
+            // Save typing score
+            localStorage.setItem("lastTypingScore", JSON.stringify({ wpm, accuracy, time: timeElapsed }));
+            alert(`Score submitted!\nWPM: ${wpm}\nAccuracy: ${accuracy}%\nTime: ${timeElapsed}s`);
+        }
+
+        startGame();
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rock Paper Scissors</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+    <h1>Rock Paper Scissors</h1>
+
+    <div class="scoreboard">
+        <div class="score-container">
+            <h2>Player</h2>
+            <p id="player-score">0</p>
+        </div>
+        <div class="score-container">
+            <h2>Computer</h2>
+            <p id="computer-score">0</p>
+        </div>
+    </div>
+
+    <div class="choices">
+        <button class="choice-btn" id="rock">✊</button>
+        <button class="choice-btn" id="paper">✋</button>
+        <button class="choice-btn" id="scissors">✌️</button>
+    </div>
+
+    <p id="result-message">Choose your weapon!</p>
+
+    <div id="overlay" class="hidden">
+        <h2 id="overlay-title"></h2>
+        <p>Final Score: <span id="final-score"></span></p>
+        <button id="submit-score-btn" onclick="submitScore()">Submit Score</button>
+        <button id="play-again-btn" onclick="playAgain()">Play Again</button>
+    </div>
+
+    <style>
+        body {
+            background-color: #1f2833;
+            color: #c5c6c7;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            text-align: center;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #0b0c10;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        #goBackBtn:hover {
+            background: #1f2833;
+        }
+
+        h1 {
+            color: #66fcf1;
+            font-size: 3rem;
+        }
+
+        .scoreboard {
+            display: flex;
+            gap: 100px;
+            margin: 20px 0;
+        }
+
+        .score-container {
+            width: 120px;
+        }
+
+        .score-container h2 {
+            margin: 0;
+            color: #45a29e;
+        }
+
+        .score-container p {
+            font-size: 3rem;
+            margin: 5px 0;
+            color: #66fcf1;
+        }
+
+        .choices {
+            margin: 30px 0;
+        }
+
+        .choice-btn {
+            font-size: 4rem;
+            background: none;
+            border: 3px solid #45a29e;
+            border-radius: 50%;
+            width: 120px;
+            height: 120px;
+            margin: 0 15px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .choice-btn:hover {
+            background-color: #45a29e;
+            transform: scale(1.1);
+        }
+
+        #result-message {
+            font-size: 1.5rem;
+            height: 30px;
+            /* Reserve space to prevent layout shift */
+            font-weight: bold;
+        }
+
+        /* Overlay for Submit Score */
+        #overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.9);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: white;
+        }
+
+        #overlay h2 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+
+        #overlay p {
+            font-size: 1.5rem;
+            margin-bottom: 30px;
+        }
+
+        #overlay button {
+            background-color: #66fcf1;
+            color: #0b0c10;
+            border: none;
+            padding: 12px 25px;
+            margin: 10px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #overlay button:hover {
+            background-color: #45a29e;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+    </style>
+
+    <script>
+        // DOM Elements
+        const playerScoreEl = document.getElementById('player-score');
+        const computerScoreEl = document.getElementById('computer-score');
+        const resultMessageEl = document.getElementById('result-message');
+        const choiceButtons = document.querySelectorAll('.choice-btn');
+        const overlay = document.getElementById('overlay');
+        const overlayTitle = document.getElementById('overlay-title');
+        const finalScoreEl = document.getElementById('final-score');
+        const submitScoreBtn = document.getElementById('submit-score-btn');
+        const playAgainBtn = document.getElementById('play-again-btn');
+
+        // Game State
+        let playerScore = 0;
+        let computerScore = 0;
+        const winningScore = 5;
+        const choices = ['rock', 'paper', 'scissors'];
+
+        // --- FUNCTIONS ---
+
+        // Get the computer's random choice
+        function computerPlay() {
+            const randomIndex = Math.floor(Math.random() * choices.length);
+            return choices[randomIndex];
+        }
+
+        // Play a single round
+        function playRound(playerSelection, computerSelection) {
+            if (playerSelection === computerSelection) {
+                return "It's a draw!";
+            }
+            if (
+                (playerSelection === 'rock' && computerSelection === 'scissors') ||
+                (playerSelection === 'paper' && computerSelection === 'rock') ||
+                (playerSelection === 'scissors' && computerSelection === 'paper')
+            ) {
+                playerScore++;
+                return `You win! ${playerSelection} beats ${computerSelection}.`;
+            } else {
+                computerScore++;
+                return `You lose! ${computerSelection} beats ${playerSelection}.`;
+            }
+        }
+
+        // Update the score and result message on the UI
+        function updateUI(message) {
+            playerScoreEl.textContent = playerScore;
+            computerScoreEl.textContent = computerScore;
+            resultMessageEl.textContent = message;
+        }
+
+        // Check if the game is over
+        function checkGameOver() {
+            if (playerScore === winningScore || computerScore === winningScore) {
+                endGame();
+            }
+        }
+
+        // Handle the game's end state
+        function endGame() {
+            choiceButtons.forEach(button => button.disabled = true); // Disable buttons
+
+            const finalMessage = playerScore === winningScore ? 'You Won!' : 'You Lost!';
+            const finalScoreText = `${playerScore} - ${computerScore}`;
+
+            overlayTitle.textContent = finalMessage;
+            finalScoreEl.textContent = finalScoreText;
+            overlay.classList.remove('hidden');
+        }
+
+        // Reset the game to its initial state
+        function resetGame() {
+            playerScore = 0;
+            computerScore = 0;
+            updateUI('Choose your weapon!');
+            overlay.classList.add('hidden');
+            choiceButtons.forEach(button => button.disabled = false); // Re-enable buttons
+            submitScoreBtn.disabled = false; // Re-enable submit button
+        }
+
+        // Handle player's choice click
+        function handlePlayerChoice(e) {
+            const playerSelection = e.currentTarget.id;
+            const computerSelection = computerPlay();
+            const roundResult = playRound(playerSelection, computerSelection);
+            updateUI(roundResult);
+            checkGameOver();
+        }
+
+        // Handle score submission
+        function submitScore() {
+            alert(`Final score of ${playerScore} - ${computerScore} submitted!`);
+            submitScoreBtn.disabled = true; // Prevent multiple submissions
+            localStorage.setItem("lastRPSScore", `${playerScore} - ${computerScore}`);
+        }
+
+        // --- EVENT LISTENERS ---
+        choiceButtons.forEach(button => button.addEventListener('click', handlePlayerChoice));
+        playAgainBtn.addEventListener('click', resetGame);
+        submitScoreBtn.addEventListener('click', submitScore);
+    </script>
+</body>
+
+</html>

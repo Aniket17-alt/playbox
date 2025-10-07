@@ -1,0 +1,17 @@
+body {
+    background-color: rgb(11, 10, 29);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+#game-collection {
+    color: #e8e7e5;
+    /* Gold color for the heading */
+}
+
+#game-description {
+    color: #B0BEC5;
+    /* Light gray color for the description */
+}

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Top Players - Playbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://css.gg/css?=|crown|medal|trophy" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        @keyframes podium-enter {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .podium-card {
+            opacity: 0;
+            /* Initially hidden */
+            animation: podium-enter 0.7s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 antialiased font-[Inter] overflow-x-hidden">
+    <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+        <div
+            class="container mx-auto px-6 py-3 bg-gray-800/80 backdrop-blur-xl rounded-full shadow-lg border border-gray-700/80">
+            <div class="flex items-center justify-between space-x-6">
+                <div class="flex items-center space-x-6">
+                    <a href="index.html" class="text-2xl font-extrabold text-white tracking-wide">PlayBox</a>
+                    <a href="index.html"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">Home</a>
+                    <a href="index.html"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">About</a>
+                    <a href="leaderboard.html"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">Leaderboard</a>
+                </div>
+                <div class="relative flex-grow max-w-xs hidden sm:block">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Search..."
+                        class="w-full bg-gray-700 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-600 transition-all duration-300">
+                </div>
+                <div id="popup-button" class="flex-shrink-0 cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 shadow-md">
+                        <svg class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="min-h-screen flex flex-col items-center justify-center pt-28 pb-16 px-4">
+        <div class="text-center mb-16">
+            <h1 class="text-5xl md:text-6xl font-extrabold text-white">Top Players</h1>
+            <p class="mt-4 text-xl text-gray-400">The Hall of Fame</p>
+        </div>
+
+        <div class="flex flex-col md:flex-row items-end justify-center gap-8 w-full max-w-4xl">
+
+            <div class="podium-card w-full max-w-xs order-2 md:order-1">
+                <div class="bg-gray-800 rounded-xl p-6 text-center border-4 border-slate-400 shadow-2xl">
+                    <div class="text-6xl mb-4">🥈</div>
+                    <div
+                        class="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-slate-600 to-slate-800 mb-4 border-2 border-slate-500">
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Prasad_1013</h3>
+                    <p class="text-slate-300 font-semibold">2nd Place</p>
+                </div>
+            </div>
+
+            <div class="podium-card w-full max-w-xs order-1 md:order-2 md:mb-12">
+                <div
+                    class="bg-gray-800 rounded-xl p-8 text-center border-4 border-amber-400 shadow-2xl transform md:scale-110">
+                    <div class="text-7xl mb-4">🥇</div>
+                    <div
+                        class="w-28 h-28 rounded-full mx-auto bg-gradient-to-br from-amber-500 to-amber-800 mb-4 border-2 border-amber-400">
+                    </div>
+                    <h3 class="text-3xl font-bold text-white">Aniket_1311</h3>
+                    <p class="text-amber-300 font-semibold">1st Place</p>
+                </div>
+            </div>
+
+            <div class="podium-card w-full max-w-xs order-3 md:order-3">
+                <div class="bg-gray-800 rounded-xl p-6 text-center border-4 border-amber-700 shadow-2xl">
+                    <div class="text-6xl mb-4">🥉</div>
+                    <div
+                        class="w-24 h-24 rounded-full mx-auto bg-gradient-to-br from-amber-800 to-stone-900 mb-4 border-2 border-amber-800">
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Tausif_0117</h3>
+                    <p class="text-amber-600 font-semibold">3rd Place</p>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <div id="auth-popup-overlay"
+        class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="relative bg-gray-800 border border-gray-700 p-8 rounded-2xl shadow-xl w-full max-w-sm">
+            <button id="close-popup-btn"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <form id="auth-form" class="space-y-6">
+                <h2 class="text-2xl font-bold text-center text-white">Login</h2>
+                <div><label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label><input
+                        type="text" id="username" name="username" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div><label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label><input
+                        type="password" id="password" name="password" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors duration-300">Login</button>
+                <div class="text-center"><a href="admin.html" class="text-sm text-blue-400 hover:underline">Admin
+                        Login</a></div>
+            </form>
+        </div>
+    </div>
+    <div class="overflow-x-auto">
+        <div class="mt-12 overflow-x-auto bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl">
+            <table class="min-w-full text-sm text-left">
+                <thead class="text-xs text-gray-400 uppercase bg-gray-700/50">
+                    <tr>
+                        <th scope="col" class="px-6 py-4">Sr.</th>
+                        <th scope="col" class="px-6 py-4">Player</th>
+                        <th scope="col" class="px-6 py-4">Flappy Bird</th>
+                        <th scope="col" class="px-6 py-4">Number Quest</th>
+                        <th scope="col" class="px-6 py-4">Typing Speed</th>
+                        <th scope="col" class="px-6 py-4">Number Guessing</th>
+                        <th scope="col" class="px-6 py-4">Tic Tac Toe</th>
+                        <th scope="col" class="px-6 py-4">Snake Game</th>
+                        <th scope="col" class="px-6 py-4">Memory Game</th>
+                        <th scope="col" class="px-6 py-4">Brick Breaker</th>
+                        <th scope="col" class="px-6 py-4">Rock Paper Scissors</th>
+                    </tr>
+                </thead>
+                <tbody class="text-gray-300">
+                    <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                        <td class="px-6 py-4 font-bold text-lg">1</td>
+                        <td class="px-6 py-4 font-medium text-white">Aniket_1311</td>
+                        <td class="px-6 py-4 font-medium text-green-400" id="fp"></td>
+                        <td class="px-6 py-4" id="nq"></td>
+                        <td class="px-6 py-4" id="ts"></td>
+                        <td class="px-6 py-4" id="ng"></td>
+                        <td class="px-6 py-4" id="ttt"></td>
+                        <td class="px-6 py-4" id="snake"></td>
+                        <td class="px-6 py-4" id="memory"></td>
+                        <td class="px-6 py-4" id="brick"></td>
+                        <td class="px-6 py-4" id="rps"></td>
+                    </tr>
+                    <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                        <td class="px-6 py-4 font-bold text-lg">2</td>
+                        <td class="px-6 py-4 font-medium text-white">Prasad_1312</td>
+                        <td class="px-6 py-4">148</td>
+                        <td class="px-6 py-4">1:25 min</td>
+                        <td class="px-6 py-4 font-medium text-green-400">105 WPM</td>
+                        <td class="px-6 py-4">4 tries</td>
+                        <td class="px-6 py-4">12 Wins</td>
+                        <td class="px-6 py-4">2,120</td>
+                        <td class="px-6 py-4">0:55 min</td>
+                        <td class="px-6 py-4">11,500</td>
+                        <td class="px-6 py-4">18 Wins</td>
+                    </tr>
+                    <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                        <td class="px-6 py-4 font-bold text-lg">3</td>
+                        <td class="px-6 py-4 font-medium text-white">CR_Tausif_0117</td>
+                        <td class="px-6 py-4">135</td>
+                        <td class="px-6 py-4 font-medium text-green-400">1:05 min</td>
+                        <td class="px-6 py-4">95 WPM</td>
+                        <td class="px-6 py-4">5 tries</td>
+                        <td class="px-6 py-4">14 Wins</td>
+                        <td class="px-6 py-4">2,890</td>
+                        <td class="px-6 py-4">1:02 min</td>
+                        <td class="px-6 py-4">10,800</td>
+                        <td class="px-6 py-4">20 Wins</td>
+                    </tr>
+                    <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                        <td class="px-6 py-4 font-bold text-lg">4</td>
+                        <td class="px-6 py-4 font-medium text-white">Maria "Ghost" Garcia</td>
+                        <td class="px-6 py-4">121</td>
+                        <td class="px-6 py-4">1:45 min</td>
+                        <td class="px-6 py-4">88 WPM</td>
+                        <td class="px-6 py-4">3 tries</td>
+                        <td class="px-6 py-4">10 Wins</td>
+                        <td class="px-6 py-4">1,980</td>
+                        <td class="px-6 py-4">1:15 min</td>
+                        <td class="px-6 py-4 font-medium text-green-400">15,500</td>
+                        <td class="px-6 py-4">15 Wins</td>
+                    </tr>
+                    <tr class="hover:bg-gray-700 transition-colors">
+                        <td class="px-6 py-4 font-bold text-lg">5</td>
+                        <td class="px-6 py-4 font-medium text-white">Kenji "Ninja" Tanaka</td>
+                        <td class="px-6 py-4">115</td>
+                        <td class="px-6 py-4">2:05 min</td>
+                        <td class="px-6 py-4">92 WPM</td>
+                        <td class="px-6 py-4">6 tries</td>
+                        <td class="px-6 py-4 font-medium text-green-400">18 Wins</td>
+                        <td class="px-6 py-4">2,450</td>
+                        <td class="px-6 py-4">0:58 min</td>
+                        <td class="px-6 py-4">9,900</td>
+                        <td class="px-6 py-4">19 Wins</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    </div>
+    </div>
+
+    <script>
+        // Pop-up Login Script
+        const popupTriggerButton = document.getElementById('popup-button');
+        const popupOverlay = document.getElementById('auth-popup-overlay');
+        const closePopupButton = document.getElementById('close-popup-btn');
+        const authForm = document.getElementById('auth-form');
+        const openPopup = () => { popupOverlay.classList.remove('hidden'); };
+        const closePopup = () => { popupOverlay.classList.add('hidden'); };
+        popupTriggerButton.addEventListener('click', openPopup);
+        closePopupButton.addEventListener('click', closePopup);
+        popupOverlay.addEventListener('click', (event) => { if (event.target === popupOverlay) { closePopup(); } });
+        authForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            alert(`Logged in as: ${document.getElementById('username').value}!`);
+            authForm.reset();
+            closePopup();
+        });
+
+        // Leaderboard Animation Script
+        document.addEventListener('DOMContentLoaded', () => {
+            const podiumCards = document.querySelectorAll('.podium-card');
+            podiumCards.forEach((card, index) => {
+                // Apply a staggered delay to each card
+                card.style.animationDelay = `${index * 200}ms`;
+            });
+        });
+
+        // Flappy Bird
+
+        const flappyScore = localStorage.getItem("lastFlappyScore");
+        if (flappyScore) {
+            document.getElementById("fp").textContent = `${flappyScore} Points`;
+        } else {
+            document.getElementById("fp").textContent = "No score found!";
+        }
+        //number quest
+        const score = localStorage.getItem("lastnqScore");
+        if (score) {
+            document.getElementById("nq").textContent = `You guessed it in ${score} attempts.`;
+        } else {
+            document.getElementById("nq").textContent = "No score found!";
+        }
+        //typing speed
+        const lastTypingScore = localStorage.getItem("lastTypingScore");
+        if (lastTypingScore) {
+            const { wpm, accuracy, time } = JSON.parse(lastTypingScore);
+            document.getElementById("ts").textContent = `${wpm} WPM`;
+        } else {
+            document.getElementById("ts").textContent = "No score found!";
+        }
+        //number guessing
+        const lastGuessScore = localStorage.getItem("lastguessScore");
+        if (lastGuessScore) {
+            document.getElementById("ng").textContent = `${lastGuessScore} attempts.`;
+        } else {
+            document.getElementById("ng").textContent = "No score found!";
+        }
+        //tic tac toe
+        const lastTicTacToeScore = localStorage.getItem("lastTicTacToeScore");
+        if (lastTicTacToeScore) {
+            document.getElementById("ttt").textContent = `${lastTicTacToeScore} Wins`;
+        } else {
+            document.getElementById("ttt").textContent = "No score found!";
+        }
+
+        //snake game
+
+        const lastSnakeScore = localStorage.getItem("lastSnakeScore");
+        if (lastSnakeScore) {
+            document.getElementById("snake").textContent = `🐍 ${lastSnakeScore}`;
+        } else {
+            document.getElementById("snake").textContent = "No score found yet!";
+        }
+        //memory game
+        const lastMemoryScore = localStorage.getItem("lastMemoryScore");
+        if (lastMemoryScore) {
+            document.getElementById("memory").textContent = `${lastMemoryScore} Moves`;
+        } else {
+            document.getElementById("memory").textContent = "No score found!";
+        }
+        //brick breaker
+        const lastBricksScore = localStorage.getItem("lastBricksScore");
+        if (lastBricksScore) {
+            document.getElementById("brick").textContent = `${lastBricksScore} Points`;
+        } else {
+            document.getElementById("brick").textContent = "No score found!";
+        }
+        //rock paper scissors
+        const lastRPSScore = localStorage.getItem("lastRPSScore");
+        if (lastRPSScore) {
+            document.getElementById("rps").textContent = `${lastRPSScore}`;
+        } else {
+            document.getElementById("rps").textContent = "No score found!";
+        }
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Flappy Bird</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: skyblue;
+            font-family: Arial, sans-serif;
+        }
+
+        #game-container {
+            position: relative;
+            /* Needed for positioning the game over menu */
+        }
+
+        canvas {
+            background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+            display: block;
+            border: 2px solid #333;
+            border-radius: 10px;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+            z-index: 10;
+            /* Ensure it's above the canvas */
+        }
+
+        #goBackBtn:hover {
+            background: #666;
+        }
+
+        /* --- NEW: Game Over Menu Styles --- */
+        #gameOverMenu {
+            display: none;
+            /* Hidden by default */
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(0, 0, 0, 0.75);
+            color: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            width: 70%;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        #gameOverMenu h2 {
+            margin-top: 0;
+            font-size: 28px;
+        }
+
+        #gameOverMenu p {
+            font-size: 20px;
+            margin: 15px 0;
+        }
+
+        #gameOverMenu button {
+            background: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            border-radius: 8px;
+            margin: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #submitScoreBtn {
+            background: #008CBA;
+        }
+
+        #gameOverMenu button:hover {
+            opacity: 0.9;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+
+    <div id="game-container">
+        <canvas id="gameCanvas" width="400" height="600"></canvas>
+
+        <div id="gameOverMenu">
+            <h2>Game Over</h2>
+            <p>Your Score: <span id="finalScore">0</span></p>
+            <button id="restartBtn" onclick="restartGame()">Restart Game</button>
+            <button id="submitScoreBtn" onclick="submitScore()">Submit Score</button>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById("gameCanvas");
+        const ctx = canvas.getContext("2d");
+
+        // --- NEW: Get Menu Elements from DOM ---
+        const gameOverMenu = document.getElementById('gameOverMenu');
+        const finalScoreEl = document.getElementById('finalScore');
+        const restartBtn = document.getElementById('restartBtn');
+        const submitScoreBtn = document.getElementById('submitScoreBtn');
+
+        let birdX = 50;
+        let birdY = 150;
+        let birdRadius = 15;
+        let gravity = 1.5;
+        let velocity = 0;
+        let jump = -25;
+
+        let pipes = [];
+        let score = 0;
+        let isGameOver = false; // --- NEW: Game state flag ---
+
+        function flap() {
+            if (!isGameOver) { // Only allow flapping if game is not over
+                velocity = jump;
+            }
+        }
+
+        document.addEventListener("keydown", flap);
+        document.addEventListener("click", (e) => {
+            // Prevent flap if clicking on a menu button
+            if (e.target.tagName !== 'BUTTON') {
+                flap();
+            }
+        });
+
+        function drawBird() {
+            ctx.beginPath();
+            ctx.arc(birdX, birdY, birdRadius, 0, Math.PI * 2);
+            ctx.fillStyle = "yellow";
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        function drawPipes() {
+            for (let i = 0; i < pipes.length; i++) {
+                let p = pipes[i];
+                ctx.fillStyle = "green";
+                ctx.fillRect(p.x, 0, p.width, p.top);
+                ctx.fillRect(p.x, p.top + p.gap, p.width, canvas.height - p.top - p.gap);
+            }
+        }
+
+        function updatePipes() {
+            if (pipes.length === 0 || pipes[pipes.length - 1].x < 250) {
+                let top = Math.floor(Math.random() * (canvas.height - 200)) + 50;
+                pipes.push({ x: canvas.width, top: top, width: 50, gap: 150 });
+            }
+
+            for (let i = 0; i < pipes.length; i++) {
+                pipes[i].x -= 2;
+
+                // Collision
+                if (
+                    birdX + birdRadius > pipes[i].x &&
+                    birdX - birdRadius < pipes[i].x + pipes[i].width &&
+                    (birdY - birdRadius < pipes[i].top ||
+                        birdY + birdRadius > pipes[i].top + pipes[i].gap)
+                ) {
+                    endGame(); // Call endGame instead of reset
+                }
+
+                // Score
+                if (pipes[i].x + pipes[i].width === birdX) {
+                    score++;
+                }
+            }
+
+            pipes = pipes.filter(p => p.x + p.width > 0);
+        }
+
+        function drawScore() {
+            ctx.fillStyle = "black";
+            ctx.font = "24px Arial";
+            ctx.fillText("Score: " + score, 10, 30);
+        }
+
+        // --- NEW: Function to end the game and show the menu ---
+        function endGame() {
+            isGameOver = true;
+            finalScoreEl.textContent = score; // Update final score on menu
+            gameOverMenu.style.display = 'block'; // Show the menu
+            submitScoreBtn.disabled = false; // Ensure submit button is enabled
+        }
+
+        // --- NEW: Function to restart the game state ---
+        function restartGame() {
+            birdY = 150;
+            velocity = 0;
+            pipes = [];
+            score = 0;
+            isGameOver = false;
+            gameOverMenu.style.display = 'none'; // Hide menu
+        }
+
+        function gameLoop() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+            if (!isGameOver) {
+                // --- Game Logic only runs if game is not over ---
+
+                // Bird
+                velocity += gravity * 0.5;
+                birdY += velocity * 0.5;
+                if (birdY + birdRadius > canvas.height || birdY - birdRadius < 0) {
+                    endGame(); // Call endGame instead of reset
+                }
+                drawBird();
+
+                // Pipes
+                updatePipes();
+                drawPipes();
+            }
+
+            // Score is drawn outside the `if` block to be visible on game over screen
+            drawScore();
+
+            requestAnimationFrame(gameLoop);
+        }
+
+        // --- NEW: Event Listeners for menu buttons ---
+        restartBtn.addEventListener('click', restartGame);
+
+        submitScoreBtn.addEventListener('click', () => {
+            alert(`Your score of ${score} has been submitted!`);
+            // Optionally disable the button after submission
+            submitScoreBtn.disabled = true;
+        });
+        function submitScore() {
+            alert(`Your score of ${score} has been submitted!`);
+            // Optionally disable the button after submission
+            submitScoreBtn.disabled = true;
+            localStorage.setItem("lastFlappyScore", score);
+
+        }
+
+        gameLoop();
+    </script>
+</body>
+
+</html>

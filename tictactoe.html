@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Tic Tac Toe</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0f172a, #1e293b);
+            color: #fff;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            margin: 10px 0;
+        }
+
+        .board {
+            display: grid;
+            grid-template-columns: repeat(3, 100px);
+            grid-template-rows: repeat(3, 100px);
+            gap: 6px;
+            margin: 20px 0;
+        }
+
+        .cell {
+            width: 100px;
+            height: 100px;
+            background: #1e293b;
+            border-radius: 8px;
+            font-size: 2.5em;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+
+        .cell:hover {
+            background: #334155;
+        }
+
+        .controls button {
+            padding: 10px 16px;
+            margin: 6px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .controls button:hover {
+            background: #1d4ed8;
+        }
+
+        #status {
+            margin-top: 12px;
+            font-size: 16px;
+            font-weight: bold;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        #goBackBtn:hover {
+            background: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+    <h2>❌ Tic Tac Toe ⭕</h2>
+    <div class="board" id="board"></div>
+    <div id="status">Your turn (X)</div>
+
+    <div class="controls">
+        <button onclick="restartGame()">Restart</button>
+        <button onclick="submitScore()">Submit Score</button>
+    </div>
+
+    <script>
+        const boardEl = document.getElementById("board");
+        const statusEl = document.getElementById("status");
+        let board, gameOver, playerTurn, moves;
+
+        function initGame() {
+            board = Array(9).fill("");
+            gameOver = false;
+            playerTurn = true; // X starts
+            moves = 0;
+            statusEl.textContent = "Your turn (X)";
+            renderBoard();
+        }
+
+        function renderBoard() {
+            boardEl.innerHTML = "";
+            board.forEach((cell, i) => {
+                const div = document.createElement("div");
+                div.classList.add("cell");
+                div.textContent = cell;
+                div.onclick = () => handleMove(i);
+                boardEl.appendChild(div);
+            });
+        }
+
+        function handleMove(index) {
+            if (gameOver || !playerTurn || board[index] !== "") return;
+            board[index] = "X";
+            moves++;
+            renderBoard();
+            if (checkWin("X")) {
+                statusEl.textContent = "🎉 You win!";
+                gameOver = true;
+                return;
+            }
+            if (moves === 9) {
+                statusEl.textContent = "🤝 It's a draw!";
+                gameOver = true;
+                return;
+            }
+            playerTurn = false;
+            statusEl.textContent = "Computer's turn (O)";
+            setTimeout(computerMove, 600);
+        }
+
+        function computerMove() {
+            if (gameOver) return;
+            let emptyCells = board.map((v, i) => v === "" ? i : null).filter(v => v !== null);
+            let choice = emptyCells[Math.floor(Math.random() * emptyCells.length)];
+            board[choice] = "O";
+            moves++;
+            renderBoard();
+            if (checkWin("O")) {
+                statusEl.textContent = "💻 Computer wins!";
+                gameOver = true;
+                return;
+            }
+            if (moves === 9) {
+                statusEl.textContent = "🤝 It's a draw!";
+                gameOver = true;
+                return;
+            }
+            playerTurn = true;
+            statusEl.textContent = "Your turn (X)";
+        }
+
+        function checkWin(player) {
+            const wins = [
+                [0, 1, 2], [3, 4, 5], [6, 7, 8], // rows
+                [0, 3, 6], [1, 4, 7], [2, 5, 8], // cols
+                [0, 4, 8], [2, 4, 6]          // diagonals
+            ];
+            return wins.some(comb => comb.every(i => board[i] === player));
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        function submitScore() {
+            if (!gameOver) {
+                alert("⚠️ Finish the game before submitting score!");
+                return;
+            }
+            let result = statusEl.textContent;
+            alert(`✅ Score submitted! Result: ${result}`);
+            // Example for backend:
+            // fetch("/submit", { method:"POST", body: JSON.stringify({ result }) })
+            localStorage.setItem("lastTicTacToeScore", score);
+            alert(`Score of ${score} submitted!`);
+        }
+
+        initGame();
+    </script>
+</body>
+
+</html>

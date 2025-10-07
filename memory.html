@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Memory Card Game</title>
+
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+    <h1>Memory Game 🧠</h1>
+    <div class="game-info">
+        <span>Moves: <span id="moves-count">0</span></span>
+        <button id="reset-button">Reset Game</button>
+    </div>
+
+    <div class="game-container">
+        <section class="game-board">
+        </section>
+
+        <div id="win-screen" class="hidden">
+            <h2>Congratulations!</h2>
+            <p>You won in <span id="final-moves">0</span> moves!</p>
+            <button id="submit-score-btn" onclick="submitScore()">Submit Score</button>
+            <button id="play-again-btn" onclick="location.reload()">Play Again</button>
+        </div>
+    </div>
+    <style>
+        /* Basic Page Setup */
+        body {
+            background-color: #f0f2f5;
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        /* Game Info and Reset Button */
+        .game-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            width: 460px;
+            /* Match game board width */
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            color: #555;
+        }
+
+        #reset-button {
+            padding: 8px 16px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            background-color: #007bff;
+            color: white;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        #reset-button:hover {
+            background-color: #0056b3;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        /* New: Container to position the overlay */
+        .game-container {
+            position: relative;
+        }
+
+        /* Game Board and Cards */
+        .game-board {
+            display: grid;
+            grid-template-columns: repeat(4, 100px);
+            gap: 10px;
+            perspective: 1000px;
+            /* For the 3D flip effect */
+        }
+
+        .card {
+            width: 100px;
+            height: 100px;
+            position: relative;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.6s;
+            border-radius: 10px;
+        }
+
+        .card.flip {
+            transform: rotateY(180deg);
+        }
+
+        .front-face,
+        .back-face {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            border-radius: 10px;
+            backface-visibility: hidden;
+            /* Hides the back of the element */
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .front-face {
+            background-color: #ffffff;
+            transform: rotateY(180deg);
+        }
+
+        .back-face {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* New: Styles for the Win Screen overlay */
+        #win-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.85);
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            border-radius: 5px;
+        }
+
+        #win-screen h2 {
+            font-size: 2.5rem;
+            margin: 0;
+        }
+
+        #win-screen p {
+            font-size: 1.5rem;
+            margin: 15px 0;
+        }
+
+        #win-screen button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            cursor: pointer;
+            border: none;
+            background-color: #28a745;
+            color: white;
+            border-radius: 5px;
+            margin-top: 10px;
+            transition: background-color 0.3s;
+        }
+
+        #win-screen button:hover {
+            background-color: #218838;
+        }
+
+        /* New: Utility class to hide elements */
+        .hidden {
+            display: none !important;
+        }
+    </style>
+    <script>
+        // DOM Elements
+        const gameBoard = document.querySelector('.game-board');
+        const movesCountSpan = document.getElementById('moves-count');
+        const resetButton = document.getElementById('reset-button');
+        const winScreen = document.getElementById('win-screen');
+        const finalMovesSpan = document.getElementById('final-moves');
+        const submitScoreBtn = document.getElementById('submit-score-btn');
+        const playAgainBtn = document.getElementById('play-again-btn');
+
+        // Card data
+        const cardEmojis = ['🍎', '🍌', '🍇', '🍉', '🍓', '🍒', '🍍', '🥝'];
+        const gameCards = [...cardEmojis, ...cardEmojis];
+
+        // Game State Variables
+        let hasFlippedCard = false;
+        let lockBoard = false;
+        let firstCard, secondCard;
+        let moves = 0;
+        let matchedPairs = 0; // New: To track winning condition
+
+        // --- FUNCTIONS ---
+
+        function shuffle(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+
+        function createBoard() {
+            shuffle(gameCards);
+            gameCards.forEach(emoji => {
+                const card = document.createElement('div');
+                card.classList.add('card');
+                card.dataset.emoji = emoji;
+
+                card.innerHTML = `
+            <div class="front-face">${emoji}</div>
+            <div class="back-face">?</div>
+        `;
+                gameBoard.appendChild(card);
+                card.addEventListener('click', flipCard);
+            });
+        }
+
+        function flipCard() {
+            if (lockBoard) return;
+            if (this === firstCard) return;
+
+            this.classList.add('flip');
+
+            if (!hasFlippedCard) {
+                hasFlippedCard = true;
+                firstCard = this;
+                return;
+            }
+
+            secondCard = this;
+            incrementMoves();
+            checkForMatch();
+        }
+
+        function checkForMatch() {
+            const isMatch = firstCard.dataset.emoji === secondCard.dataset.emoji;
+            isMatch ? disableCards() : unflipCards();
+        }
+
+        function disableCards() {
+            firstCard.removeEventListener('click', flipCard);
+            secondCard.removeEventListener('click', flipCard);
+
+            matchedPairs++; // New: Increment matched pairs count
+
+            // New: Check for win condition
+            if (matchedPairs === cardEmojis.length) {
+                setTimeout(showWinScreen, 500); // Show win screen after a brief delay
+            }
+
+            resetBoard();
+        }
+
+        function unflipCards() {
+            lockBoard = true;
+            setTimeout(() => {
+                firstCard.classList.remove('flip');
+                secondCard.classList.remove('flip');
+                resetBoard();
+            }, 1200);
+        }
+
+        function resetBoard() {
+            [hasFlippedCard, lockBoard] = [false, false];
+            [firstCard, secondCard] = [null, null];
+        }
+
+        function incrementMoves() {
+            moves++;
+            movesCountSpan.textContent = moves;
+        }
+
+        // New: Function to show the win screen
+        function showWinScreen() {
+            finalMovesSpan.textContent = moves;
+            winScreen.classList.remove('hidden');
+        }
+
+        // New: Function to handle score submission
+        function submitScore() {
+            alert(`Your score of ${moves} moves has been submitted! (This is a demo)`);
+            localStorage.setItem("lastMemoryScore", moves);
+            // Optionally, redirect to admin panel or another page
+            // window.location.href = "admin.html";
+            submitScoreBtn.disabled = true; // Prevent multiple submissions
+        }
+
+        function resetGame() {
+            gameBoard.innerHTML = '';
+            moves = 0;
+            movesCountSpan.textContent = moves;
+            matchedPairs = 0; // New: Reset matched pairs count
+            winScreen.classList.add('hidden'); // New: Hide the win screen
+            submitScoreBtn.disabled = false; // New: Re-enable submit button
+            resetBoard();
+            createBoard();
+        }
+
+        // --- EVENT LISTENERS ---
+        resetButton.addEventListener('click', resetGame);
+        playAgainBtn.addEventListener('click', resetGame); // New
+        submitScoreBtn.addEventListener('click', submitScore); // New
+
+        // --- INITIALIZE GAME ---
+        createBoard();
+    </script>
+</body>
+
+</html>

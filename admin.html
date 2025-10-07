@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        /* A simple animation for failed login attempt */
+        @keyframes shake {
+
+            0%,
+            100% {
+                transform: translateX(0);
+            }
+
+            10%,
+            30%,
+            50%,
+            70%,
+            90% {
+                transform: translateX(-10px);
+            }
+
+            20%,
+            40%,
+            60%,
+            80% {
+                transform: translateX(10px);
+            }
+        }
+
+        .shake {
+            animation: shake 0.5s ease-in-out;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 text-white font-[Inter] min-h-screen flex items-center justify-center p-4">
+
+    <div id="login-section" class="w-full max-w-md">
+        <div class="bg-gray-800 border border-gray-700 p-8 rounded-2xl shadow-2xl relative">
+
+            <a href="index.html" title="Back to Home"
+                class="absolute top-4 left-4 p-2 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                    stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+            </a>
+
+            <h2 class="text-3xl font-bold text-center mb-6">Admin Login</h2>
+            <form id="login-form" class="space-y-6">
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-3 focus:ring-2 focus:ring-blue-500 focus:outline-none transition">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-lg transition-colors duration-300">
+                    Login
+                </button>
+            </form>
+            <p id="error-message" class="hidden mt-4 text-center text-red-400">Invalid username or password.</p>
+        </div>
+    </div>
+
+    <div id="admin-content" class="hidden w-full max-w-5xl">
+        <div class="bg-gray-800 border border-gray-700 p-6 sm:p-8 rounded-2xl shadow-2xl">
+            <div class="flex justify-between items-center mb-6">
+                <div class="flex items-center gap-4">
+
+                    <a href="index.html" title="Back to Home"
+                        class="p-2 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-all">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24"
+                            stroke="currentColor" stroke-width="2">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                        </svg>
+                    </a>
+
+                    <h1 class="text-3xl font-bold">Player Activity</h1>
+                </div>
+                <button id="logout-btn"
+                    class="bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors">
+                    Logout
+                </button>
+            </div>
+
+            <div class="overflow-x-auto">
+                <div class="mt-12 overflow-x-auto bg-gray-800 border border-gray-700 rounded-2xl shadow-2xl">
+                    <table class="min-w-full text-sm text-left">
+                        <thead class="text-xs text-gray-400 uppercase bg-gray-700/50">
+                            <tr>
+                                <th scope="col" class="px-6 py-4">Sr.</th>
+                                <th scope="col" class="px-6 py-4">Player</th>
+                                <th scope="col" class="px-6 py-4">Flappy Bird</th>
+                                <th scope="col" class="px-6 py-4">Number Quest</th>
+                                <th scope="col" class="px-6 py-4">Typing Speed</th>
+                                <th scope="col" class="px-6 py-4">Number Guessing</th>
+                                <th scope="col" class="px-6 py-4">Tic Tac Toe</th>
+                                <th scope="col" class="px-6 py-4">Snake Game</th>
+                                <th scope="col" class="px-6 py-4">Memory Game</th>
+                                <th scope="col" class="px-6 py-4">Brick Breaker</th>
+                                <th scope="col" class="px-6 py-4">Rock Paper Scissors</th>
+                            </tr>
+                        </thead>
+                        <tbody class="text-gray-300">
+                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 font-bold text-lg">1</td>
+                                <td class="px-6 py-4 font-medium text-white">Aniket_1311</td>
+                                <td class="px-6 py-4 font-medium text-green-400" id="fp"></td>
+                                <td class="px-6 py-4" id="nq"></td>
+                                <td class="px-6 py-4" id="ts"></td>
+                                <td class="px-6 py-4" id="ng"></td>
+                                <td class="px-6 py-4" id="ttt"></td>
+                                <td class="px-6 py-4" id="snake"></td>
+                                <td class="px-6 py-4" id="memory"></td>
+                                <td class="px-6 py-4" id="brick"></td>
+                                <td class="px-6 py-4" id="rps"></td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 font-bold text-lg">2</td>
+                                <td class="px-6 py-4 font-medium text-white">Prasad_1312</td>
+                                <td class="px-6 py-4">148</td>
+                                <td class="px-6 py-4">1:25 min</td>
+                                <td class="px-6 py-4 font-medium text-green-400">105 WPM</td>
+                                <td class="px-6 py-4">4 tries</td>
+                                <td class="px-6 py-4">12 Wins</td>
+                                <td class="px-6 py-4">2,120</td>
+                                <td class="px-6 py-4">0:55 min</td>
+                                <td class="px-6 py-4">11,500</td>
+                                <td class="px-6 py-4">18 Wins</td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 font-bold text-lg">3</td>
+                                <td class="px-6 py-4 font-medium text-white">CR_Tausif_0117</td>
+                                <td class="px-6 py-4">135</td>
+                                <td class="px-6 py-4 font-medium text-green-400">1:05 min</td>
+                                <td class="px-6 py-4">95 WPM</td>
+                                <td class="px-6 py-4">5 tries</td>
+                                <td class="px-6 py-4">14 Wins</td>
+                                <td class="px-6 py-4">2,890</td>
+                                <td class="px-6 py-4">1:02 min</td>
+                                <td class="px-6 py-4">10,800</td>
+                                <td class="px-6 py-4">20 Wins</td>
+                            </tr>
+                            <tr class="border-b border-gray-700 hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 font-bold text-lg">4</td>
+                                <td class="px-6 py-4 font-medium text-white">Maria "Ghost" Garcia</td>
+                                <td class="px-6 py-4">121</td>
+                                <td class="px-6 py-4">1:45 min</td>
+                                <td class="px-6 py-4">88 WPM</td>
+                                <td class="px-6 py-4">3 tries</td>
+                                <td class="px-6 py-4">10 Wins</td>
+                                <td class="px-6 py-4">1,980</td>
+                                <td class="px-6 py-4">1:15 min</td>
+                                <td class="px-6 py-4 font-medium text-green-400">15,500</td>
+                                <td class="px-6 py-4">15 Wins</td>
+                            </tr>
+                            <tr class="hover:bg-gray-700 transition-colors">
+                                <td class="px-6 py-4 font-bold text-lg">5</td>
+                                <td class="px-6 py-4 font-medium text-white">Kenji "Ninja" Tanaka</td>
+                                <td class="px-6 py-4">115</td>
+                                <td class="px-6 py-4">2:05 min</td>
+                                <td class="px-6 py-4">92 WPM</td>
+                                <td class="px-6 py-4">6 tries</td>
+                                <td class="px-6 py-4 font-medium text-green-400">18 Wins</td>
+                                <td class="px-6 py-4">2,450</td>
+                                <td class="px-6 py-4">0:58 min</td>
+                                <td class="px-6 py-4">9,900</td>
+                                <td class="px-6 py-4">19 Wins</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Get all necessary elements from the DOM
+        const loginSection = document.getElementById('login-section');
+        const adminContent = document.getElementById('admin-content');
+        const loginForm = document.getElementById('login-form');
+        const usernameInput = document.getElementById('username');
+        const passwordInput = document.getElementById('password');
+        const errorMessage = document.getElementById('error-message');
+        const logoutBtn = document.getElementById('logout-btn');
+
+        // --- Credentials ---
+        const CORRECT_USERNAME = "admin123";
+        const CORRECT_PASSWORD = "Admin@123";
+
+        // Function to show the admin content
+        function showAdminPanel() {
+            loginSection.classList.add('hidden');
+            adminContent.classList.remove('hidden');
+        }
+
+        // Function to show the login form
+        function showLogin() {
+            adminContent.classList.add('hidden');
+            loginSection.classList.remove('hidden');
+            loginForm.reset();
+        }
+
+        // Check session storage on page load to see if user is already logged in
+        if (sessionStorage.getItem('isAdminLoggedIn') === 'true') {
+            showAdminPanel();
+        }
+
+        // --- Event Listeners ---
+
+        // 1. Handle Login Form Submission
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault(); // Prevent page from reloading
+
+            const username = usernameInput.value;
+            const password = passwordInput.value;
+
+            // Check if credentials are correct
+            if (username === CORRECT_USERNAME && password === CORRECT_PASSWORD) {
+                // On successful login:
+                sessionStorage.setItem('isAdminLoggedIn', 'true');
+                showAdminPanel();
+                errorMessage.classList.add('hidden');
+            } else {
+                // On failed login:
+                errorMessage.classList.remove('hidden');
+                loginForm.classList.add('shake');
+                setTimeout(() => {
+                    loginForm.classList.remove('shake');
+                }, 500);
+            }
+        });
+
+        // 2. Handle Logout Button Click
+        logoutBtn.addEventListener('click', () => {
+            sessionStorage.removeItem('isAdminLoggedIn');
+            showLogin();
+        });
+        // Load and display scores from localStorage
+        // Flappy Bird
+
+        const flappyScore = localStorage.getItem("lastFlappyScore");
+        if (flappyScore) {
+            document.getElementById("fp").textContent = `${flappyScore} Points`;
+        } else {
+            document.getElementById("fp").textContent = "No score found!";
+        }
+        //number quest
+        const score = localStorage.getItem("lastnqScore");
+        if (score) {
+            document.getElementById("nq").textContent = `You guessed it in ${score} attempts.`;
+        } else {
+            document.getElementById("nq").textContent = "No score found!";
+        }
+        //typing speed
+        const lastTypingScore = localStorage.getItem("lastTypingScore");
+        if (lastTypingScore) {
+            const { wpm, accuracy, time } = JSON.parse(lastTypingScore);
+            document.getElementById("ts").textContent = `${wpm} WPM`;
+        } else {
+            document.getElementById("ts").textContent = "No score found!";
+        }
+        //number guessing
+        const lastGuessScore = localStorage.getItem("lastguessScore");
+        if (lastGuessScore) {
+            document.getElementById("ng").textContent = `${lastGuessScore} attempts.`;
+        } else {
+            document.getElementById("ng").textContent = "No score found!";
+        }
+        //tic tac toe
+        const lastTicTacToeScore = localStorage.getItem("lastTicTacToeScore");
+        if (lastTicTacToeScore) {
+            document.getElementById("ttt").textContent = `${lastTicTacToeScore} Wins`;
+        } else {
+            document.getElementById("ttt").textContent = "No score found!";
+        }
+
+        //snake game
+
+        const lastSnakeScore = localStorage.getItem("lastSnakeScore");
+        if (lastSnakeScore) {
+            document.getElementById("snake").textContent = `🐍 ${lastSnakeScore}`;
+        } else {
+            document.getElementById("snake").textContent = "No score found yet!";
+        }
+        //memory game
+        const lastMemoryScore = localStorage.getItem("lastMemoryScore");
+        if (lastMemoryScore) {
+            document.getElementById("memory").textContent = `${lastMemoryScore} Moves`;
+        } else {
+            document.getElementById("memory").textContent = "No score found!";
+        }
+        //brick breaker
+        const lastBricksScore = localStorage.getItem("lastBricksScore");
+        if (lastBricksScore) {
+            document.getElementById("brick").textContent = `${lastBricksScore} Points`;
+        } else {
+            document.getElementById("brick").textContent = "No score found!";
+        }
+        //rock paper scissors
+        const lastRPSScore = localStorage.getItem("lastRPSScore");
+        if (lastRPSScore) {
+            document.getElementById("rps").textContent = `${lastRPSScore}`;
+        } else {
+            document.getElementById("rps").textContent = "No score found!";
+        }
+
+    </script>
+</body>
+
+</html>

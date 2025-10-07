@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Number Guessing Game</title>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-start;
+            font-family: Arial, sans-serif;
+            background: linear-gradient(180deg, #0f172a, #1e293b);
+            color: #fff;
+            height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+
+        h2 {
+            margin-bottom: 10px;
+        }
+
+        .panel {
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+            width: 100%;
+            max-width: 320px;
+        }
+
+        input {
+            padding: 10px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+            border-radius: 6px;
+            border: none;
+            margin-right: 8px;
+        }
+
+        button {
+            padding: 8px 16px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-size: 14px;
+            margin: 4px;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #goBackBtn {
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: #444;
+            color: white;
+            border: none;
+            padding: 8px 14px;
+            font-size: 14px;
+            cursor: pointer;
+            border-radius: 6px;
+        }
+
+        #goBackBtn:hover {
+            background: #666;
+        }
+
+
+
+        #message {
+            margin: 12px 0;
+            font-size: 16px;
+        }
+
+        .score {
+            margin-top: 10px;
+            font-size: 14px;
+            color: #cbd5e1;
+        }
+    </style>
+</head>
+
+<body>
+    <button id="goBackBtn" onclick="window.location.href='index.html'">⬅ Go Back</button>
+    <h2>🔢 Number Guessing Game</h2>
+    <div class="panel">
+        <p>Guess a number between <b>1</b> and <b>100</b>.</p>
+        <div>
+            <input type="number" id="guess" min="1" max="100">
+            <button onclick="checkGuess()">Guess</button>
+        </div>
+        <div id="message"></div>
+        <div class="score">Attempts: <span id="attempts">0</span></div>
+
+        <button onclick="restartGame()">Restart</button>
+        <button onclick="submitScore()">Submit Score</button>
+    </div>
+
+    <script>
+        let secretNumber, attempts, gameOver;
+
+        function initGame() {
+            secretNumber = Math.floor(Math.random() * 100) + 1;
+            attempts = 0;
+            gameOver = false;
+            document.getElementById("message").textContent = "";
+            document.getElementById("attempts").textContent = "0";
+            document.getElementById("guess").value = "";
+        }
+
+        function checkGuess() {
+            if (gameOver) return;
+            const guessInput = document.getElementById("guess");
+            const guess = parseInt(guessInput.value);
+            if (!guess || guess < 1 || guess > 100) {
+                document.getElementById("message").textContent = "⚠️ Enter a number 1–100!";
+                return;
+            }
+            attempts++;
+            document.getElementById("attempts").textContent = attempts;
+            if (guess === secretNumber) {
+                document.getElementById("message").textContent = `🎉 Correct! The number was ${secretNumber}`;
+                gameOver = true;
+            } else if (guess < secretNumber) {
+                document.getElementById("message").textContent = "📉 Too low! Try again.";
+            } else {
+                document.getElementById("message").textContent = "📈 Too high! Try again.";
+            }
+            guessInput.value = "";
+        }
+
+        function restartGame() {
+            initGame();
+        }
+
+        function submitScore() {
+            if (!gameOver) {
+                alert("❌ Finish the game before submitting score!");
+                return;
+            }
+            alert(`✅ Score submitted! You guessed it in ${attempts} attempts.`);
+            // Example for backend:
+            // fetch("/submit", { method:"POST", body: JSON.stringify({ attempts }) })
+            // Save guess score
+            localStorage.setItem("lastguessScore", attempts);
+            alert(`Score of ${attempts} submitted!`);
+        }
+
+        initGame();
+    </script>
+</body>
+
+</html>

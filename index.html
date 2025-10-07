@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Playbox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Define the keyframe animation */
+        @keyframes card-come-up {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Class to apply to the cards */
+        /* It's initially hidden and will be animated by JavaScript */
+        .game-card {
+            opacity: 0;
+        }
+
+        /* The class that triggers the animation */
+        .animate-card {
+            animation: card-come-up 0.6s ease-out forwards;
+        }
+    </style>
+</head>
+
+<body class="bg-gray-900 antialiased font-[Inter]">
+    <nav class="fixed top-4 left-1/2 -translate-x-1/2 z-50">
+        <div
+            class="container mx-auto px-6 py-3 bg-gray-800/80 backdrop-blur-xl rounded-full shadow-lg border border-gray-700/80">
+            <div class="flex items-center justify-between space-x-6">
+                <div class="flex items-center space-x-6">
+                    <a href="#" class="text-2xl font-extrabold text-white tracking-wide">PlayBox</a>
+                    <a href="#"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">Home</a>
+                    <a href="#"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">About</a>
+                    <a href="leaderboard.html"
+                        class="hidden sm:block text-gray-300 hover:text-white transition-colors duration-300 font-medium">Leaderboard</a>
+                </div>
+
+                <div class="relative flex-grow max-w-xs hidden sm:block">
+                    <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                        <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <circle cx="11" cy="11" r="8"></circle>
+                            <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+                        </svg>
+                    </div>
+                    <input type="text" placeholder="Search..."
+                        class="w-full bg-gray-700 rounded-full py-2 pl-10 pr-4 text-sm text-gray-200 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-gray-600 transition-all duration-300">
+                </div>
+
+                <div id="popup-button" class="flex-shrink-0 cursor-pointer">
+                    <div
+                        class="w-10 h-10 rounded-full bg-gradient-to-br from-blue-500 to-indigo-700 flex items-center justify-center text-white hover:scale-110 transition-transform duration-300 shadow-md">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" width="24" height="24"
+                            viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                            stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+                            <circle cx="12" cy="7" r="4"></circle>
+                        </svg>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="container mx-auto px-4 sm:px-6 lg:px-8 pt-28 pb-16">
+        <div class="text-center mb-12">
+            <h1 class="text-4xl md:text-5xl font-extrabold text-white">Game Collection</h1>
+            <p class="mt-4 text-lg text-gray-400">Explore our hand-picked selection of games.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <a href="flapybird.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/flapy bird.png" alt="Flappy Bird Game"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Flappy Bird</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Navigate the bird through the pipes in this classic arcade
+                            game.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="numberpuzzel.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/numberpuzzel.png" alt="Number Quest"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Number Quest</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Arrange the numbers in the correct order.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="typing.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/typing.png" alt="Typing Speed"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Typing Speed</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Test your typing speed and improve your skills.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="guess.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/guess.webp" alt="Number Guessing"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Number Guessing</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Guess the correct number within the given attempts.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="tictactoe.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/tic-tac-toe-game-board.webp" alt="Tic Tac Toe"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Tic Tac Toe</h3>
+                        <p class="text-gray-400 mb-4 text-sm">A classic game of strategy and skill.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="snakegame.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/snake.png" alt="Snake game"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Snake game</h3>
+                        <p class="text-gray-400 mb-4 text-sm">A classic game where you control a snake to eat food and
+                            grow.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="memory.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/memory.png" alt="Memory game"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Memory Game</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Match pairs of cards to win the game.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="bricks.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/bricks.png" alt="Bricks Breaker"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Bricks Breaker</h3>
+                        <p class="text-gray-400 mb-4 text-sm">Break all the bricks with your ball.</p>
+                    </div>
+                </div>
+            </a>
+            <a href="rps.html" class="block game-card">
+                <div
+                    class="bg-gray-800 rounded-2xl border border-gray-700 overflow-hidden group transform hover:-translate-y-2 transition-all duration-300">
+                    <img src="images/rps.webp" alt="Rock Paper Scissors"
+                        class="w-full h-48 object-cover group-hover:scale-105 transition-transform duration-500">
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-white mb-2">Rock Paper Scissors</h3>
+                        <p class="text-gray-400 mb-4 text-sm">A classic game of chance and strategy.</p>
+                    </div>
+                </div>
+            </a>
+        </div>
+    </main>
+
+    <div id="auth-popup-overlay"
+        class="hidden fixed inset-0 bg-black/60 backdrop-blur-sm flex items-center justify-center z-50">
+        <div class="relative bg-gray-800 border border-gray-700 p-8 rounded-2xl shadow-xl w-full max-w-sm">
+            <button id="close-popup-btn"
+                class="absolute top-4 right-4 text-gray-400 hover:text-white transition-colors">
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+                    stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
+            <form id="auth-form" class="space-y-6">
+                <h2 class="text-2xl font-bold text-center text-white">Login</h2>
+                <div>
+                    <label for="username" class="block text-sm font-medium text-gray-300 mb-2">Username</label>
+                    <input type="text" id="username" name="username" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <div>
+                    <label for="password" class="block text-sm font-medium text-gray-300 mb-2">Password</label>
+                    <input type="password" id="password" name="password" required
+                        class="w-full bg-gray-700 border border-gray-600 text-white rounded-lg p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none">
+                </div>
+                <button type="submit"
+                    class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-2.5 px-4 rounded-lg transition-colors duration-300">
+                    Login
+                </button>
+                <div class="text-center">
+                    <a href="admin.html" class="text-sm text-blue-400 hover:underline">
+                        Admin Login
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const popupTriggerButton = document.getElementById('popup-button');
+        const popupOverlay = document.getElementById('auth-popup-overlay');
+        const closePopupButton = document.getElementById('close-popup-btn');
+        const authForm = document.getElementById('auth-form');
+        const openPopup = () => { popupOverlay.classList.remove('hidden'); };
+        const closePopup = () => { popupOverlay.classList.add('hidden'); };
+        popupTriggerButton.addEventListener('click', openPopup);
+        closePopupButton.addEventListener('click', closePopup);
+        popupOverlay.addEventListener('click', (event) => { if (event.target === popupOverlay) { closePopup(); } });
+        authForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            alert(`Thank you for logging in, ${username}!`);
+            authForm.reset();
+            closePopup();
+        });
+    </script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Select all the elements with the 'game-card' class
+            const cards = document.querySelectorAll('.game-card');
+
+            // Loop through each card
+            cards.forEach((card, index) => {
+                // Set a staggered delay for each card's animation
+                // The first card will have a 0ms delay, the second 100ms, etc.
+                const delay = index * 100; // 100ms delay between each card
+
+                // Use setTimeout to apply the animation class after the delay
+                setTimeout(() => {
+                    card.classList.add('animate-card');
+                }, delay);
+            });
+        });
+    </script>
+</body>
+
+</html>
